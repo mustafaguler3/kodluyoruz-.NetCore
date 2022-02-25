@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Webapi.BookOperations.CreateBook;
+using Webapi.BookOperations.DeleteBook;
 using Webapi.BookOperations.GetBooks;
 using Webapi.BookOperations.GetById;
 using Webapi.BookOperations.UpdateBook;
@@ -44,12 +45,21 @@ namespace Webapi.Controllers
             return Ok(result);
         }
 
-        [HttpGet("id")]
-        public Book GetById(int id){
-            GetByIdQuery query = new GetByIdQuery(_context);
-            query.Model.Id = id;
+        [HttpGet("{id}")]
+        public IActionResult GetById(int id){
+            GetByIdModel result;
             
-            return query.Handle();
+            try
+            {
+                GetByIdQuery query = new GetByIdQuery(_context);
+                query.Model.Id = id;
+                result = query.Handle();
+            }
+            catch (System.Exception ex)
+            {
+                 return BadRequest(ex.Message);
+            }
+            return Ok(result);
         }
 
         [HttpGet]
@@ -80,18 +90,25 @@ namespace Webapi.Controllers
         [HttpPut("{id}")]
         public IActionResult UpdateBook(int id,[FromBody] UpdateBookModel model){
             UpdateBookQuery query = new UpdateBookQuery(_context);            
+            query.Model.Id = id;
             query.Model = model;
             query.Handle();
             return Ok();
         }
+        
+        
         [HttpDelete("{id}")]
         public IActionResult DeleteBook(int id){
-            var book = BookList.SingleOrDefault(i=>i.Id==id);
-            if(book is null){
-                return BadRequest();
+            try
+            {
+                DeleteBookCommand command = new DeleteBookCommand(_context);
+                command.BookId = id;
+                command.Handle();
             }
-            _context.Books.Remove(book);
-            _context.SaveChanges();
+            catch (System.Exception ex)
+            {
+                 return BadRequest(ex.Message);
+            }
             return Ok();
         }
     }

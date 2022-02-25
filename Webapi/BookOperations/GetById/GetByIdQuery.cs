@@ -16,9 +16,12 @@ namespace Webapi.BookOperations.GetById
             _DbContext = DbContext;
         }
 
-        public Book Handle(){
+        public GetByIdModel Handle(){
             var book = _DbContext.Books.Where(i=>i.Id==Model.Id).SingleOrDefault();
-            return book;
+            Model.PageCount = book.PageCount;
+            Model.PublishDate = book.PublishDate;
+            Model.Title = book.Title;
+            return Model;
         }
     }
 
