@@ -1,0 +1,36 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+
+namespace Webapi.DbOperations
+{
+    public class DataGenerator
+    {
+        public static void Initiliaze(IServiceProvider provider){
+            using(var context = new BookStoreDbContext(provider.GetRequiredService<DbContextOptions<BookStoreDbContext>>())){
+                if(context.Books.Any()){
+                    return;
+                }
+                context.Books.AddRange(
+                    new Book{
+                Id=1,
+                Title="Lead Startup",
+                GenreId=1,
+                PageCount=50,
+                PublishDate=new DateTime(2001,6,12)
+                },
+                new Book{
+                Id=2,
+                Title="Herland",
+                GenreId=2,
+                PageCount=55,
+                PublishDate=new DateTime(2001,6,12)
+                }
+                );
+            }
+        }
+    }
+}
