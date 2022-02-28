@@ -1,3 +1,4 @@
+using AutoMapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,18 +10,22 @@ namespace Webapi.BookOperations.GetById
     public class GetByIdQuery
     {
         public GetByIdModel Model {get;set;}
+        private readonly IMapper _mapper;
         private readonly BookStoreDbContext _DbContext;
 
-        public GetByIdQuery(BookStoreDbContext DbContext)
+        public GetByIdQuery(BookStoreDbContext DbContext, IMapper mapper)
         {
             _DbContext = DbContext;
+            _mapper = mapper;
         }
 
         public GetByIdModel Handle(){
             var book = _DbContext.Books.Where(i=>i.Id==Model.Id).SingleOrDefault();
-            Model.PageCount = book.PageCount;
-            Model.PublishDate = book.PublishDate;
-            Model.Title = book.Title;
+
+            GetByIdModel vm = _mapper.Map<GetByIdModel>(book);
+            //Model.PageCount = book.PageCount;
+            //Model.PublishDate = book.PublishDate;
+            //Model.Title = book.Title;
             return Model;
         }
     }

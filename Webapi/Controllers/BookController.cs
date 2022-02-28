@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
 using Webapi.BookOperations.CreateBook;
 using Webapi.BookOperations.DeleteBook;
@@ -18,10 +20,14 @@ namespace Webapi.Controllers
     {
         //readonyly birdaha değiştirilmesin consructor içinde set edilsin
         private readonly BookStoreDbContext _context;
+        private readonly IMapper _mapper;
 
-        public BookController(BookStoreDbContext context){
+        public BookController(BookStoreDbContext context, IMapper mapper)
+        {
             _context = context;
+            _mapper = mapper;
         }
+
         private static List<Book> BookList = new List<Book>(){
             new Book{
                 Id=1,
@@ -40,7 +46,7 @@ namespace Webapi.Controllers
         };
         [HttpGet]
         public IActionResult GetBooks(){
-            GetBooksQuery query = new GetBooksQuery(_context);
+            GetBooksQuery query = new GetBooksQuery(_context,_mapper);
             var result = query.Handle();
             return Ok(result);
         }
@@ -51,7 +57,7 @@ namespace Webapi.Controllers
             
             try
             {
-                GetByIdQuery query = new GetByIdQuery(_context);
+                GetByIdQuery query = new GetByIdQuery(_context,_mapper);
                 query.Model.Id = id;
                 result = query.Handle();
             }
@@ -61,7 +67,6 @@ namespace Webapi.Controllers
             }
             return Ok(result);
         }
-
         [HttpGet]
         public Book Get([FromQuery] string id){
             var book = BookList.Where(i=>i.Id==Convert.ToInt32(id)).SingleOrDefault();
@@ -70,11 +75,25 @@ namespace Webapi.Controllers
         [HttpPost]
         public IActionResult AddBook([FromBody] CreateBookModel newBook){
             //var book = BookList.SingleOrDefault(i=>i.Title==newBook.Title);
-            CreateBookCommand command = new CreateBookCommand(_context);
+            CreateBookCommand command = new CreateBookCommand(_context,_mapper);
             try
             {
                 command.Model = newBook;
-                command.Handle();
+                CreateBookCommandValidator validator = new CreateBookCommandValidator();
+                
+                ValidationResult result = validator.Validate(command);
+                if (!result.IsValid)
+                {
+                    foreach (var item in result.Errors)
+                    {
+                        Console.WriteLine("Özellik "+item.PropertyName + "Error Message "+item.ErrorMessage);
+                    }
+                }
+                else
+                {
+                        command.Handle();
+                }
+                
             }
             catch (System.Exception ex)
             {
@@ -94,8 +113,7 @@ namespace Webapi.Controllers
             query.Model = model;
             query.Handle();
             return Ok();
-        }
-        
+        }       
         
         [HttpDelete("{id}")]
         public IActionResult DeleteBook(int id){

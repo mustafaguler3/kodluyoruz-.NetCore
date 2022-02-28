@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Mustafa GULER\\Desktop\\bookstores\\Webapi\\Webapi.csproj": {}
+    "C:\\Users\\Mustafa GULER\\Desktop\\kodluyoruz-.NetCore\\Webapi\\Webapi.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Mustafa GULER\\Desktop\\bookstores\\Webapi\\Webapi.csproj": {
+    "C:\\Users\\Mustafa GULER\\Desktop\\kodluyoruz-.NetCore\\Webapi\\Webapi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Mustafa GULER\\Desktop\\bookstores\\Webapi\\Webapi.csproj",
+        "projectUniqueName": "C:\\Users\\Mustafa GULER\\Desktop\\kodluyoruz-.NetCore\\Webapi\\Webapi.csproj",
         "projectName": "Webapi",
-        "projectPath": "C:\\Users\\Mustafa GULER\\Desktop\\bookstores\\Webapi\\Webapi.csproj",
+        "projectPath": "C:\\Users\\Mustafa GULER\\Desktop\\kodluyoruz-.NetCore\\Webapi\\Webapi.csproj",
         "packagesPath": "C:\\Users\\Mustafa GULER\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Mustafa GULER\\Desktop\\bookstores\\Webapi\\obj\\",
+        "outputPath": "C:\\Users\\Mustafa GULER\\Desktop\\kodluyoruz-.NetCore\\Webapi\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Mustafa GULER\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -40,6 +40,18 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "dependencies": {
+            "AutoMapper": {
+              "target": "Package",
+              "version": "[11.0.1, )"
+            },
+            "AutoMapper.Extensions.Microsoft.DependencyInjection": {
+              "target": "Package",
+              "version": "[8.1.1, )"
+            },
+            "FluentValidation": {
+              "target": "Package",
+              "version": "[10.3.6, )"
+            },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
               "version": "[5.0.6, )"
