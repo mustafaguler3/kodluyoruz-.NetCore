@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
+using Webapi.Entities;
 
 public class Book
 {
@@ -9,5 +10,6 @@ public class Book
     public int GenreId {get;set;}
     public int PageCount {get;set;}
     public DateTime PublishDate {get;set;}
+    public Author Author {get;set;}
     
 }

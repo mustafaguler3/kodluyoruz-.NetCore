@@ -61,6 +61,11 @@ namespace Webapi
             {
                 endpoints.MapControllers();
             });
+
+            app.Use(async (context,next)=>{
+                System.Console.WriteLine("Middlareware 2 başladı.");
+                await next.Invoke();
+            });
         }
     }
 }

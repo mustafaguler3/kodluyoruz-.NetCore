@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Webapi.Entities;
 
 namespace Webapi.DbOperations
 {
@@ -14,6 +15,20 @@ namespace Webapi.DbOperations
                 if(context.Books.Any()){
                     return;
                 }
+                context.Authors.AddRange(
+                    new Author{
+                        Name="Mustafa",
+                        Lastname="Güler",
+                        BirthDay=new DateTime(2001,6,12)},
+                    new Author{
+                        Name="Hasan",
+                        Lastname="Güler",
+                        BirthDay=new DateTime(2002,6,14)}
+                );
+                context.Genres.AddRange(
+                    new Genre{Name="Personel Growth"},
+                    new Genre{Name="Science Fiction"}
+                );
                 context.Books.AddRange(
                     new Book{
                 Id=1,
